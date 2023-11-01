@@ -1,0 +1,69 @@
+To Do:
+- Book slot for demo, by deadline
+- must be demo-ed within demo weeks during selected slot
+- demo-ed & explained satisfactorily
+
+Submission must contain:
+- the code
+- README file
+-- Link to Github Repo
+-- Link to Github Pages
+
+
+Over Requirements:
+
+- Doesn't need backend storage.
+- Doesn't need to store completed orders
+- Can use CSS library (Bootstrap)
+-- Make sure to link it properly
+
+- Must use Vue.js
+-- Other related frameworks not allowed.
+-- Other Javascript libraries that replaces Vue.js functions not allowed.
+--- Ask if you have doubt.
+
+- Must be hosted on Github Repo
+-- At least 10 commits
+-- Must be available on Github Pages
+-- DO NOT USE SFC (Single File Component)
+
+- Should have at least 10 lessons
+-- each should have:
+--- Subject
+--- Location
+--- Price
+--- Spaces
+---- each should have at least 5 spaces
+--- Font Awesomne Icon
+-- must be stored in JSON array.
+-- v-for must be used for display.
+
+- sort lessons by:
+-- subject
+-- location
+-- price
+-- spaces
+-- in both descending/ascending
+
+- each lesson should have "Add To Cart" button.
+-- always visible; enabled when space greater than 1
+-- clicking once add 1 to cart, minus 1 from space
+-- space = 0 => button is disabled, but visible
+
+- shopping cart
+-- enabled after at least one lesson is added
+-- clicking a button should show the cart; clicking it again should show the products
+--- cart should show all the lessons added
+---- should be able to remove lessons; add/minus spaces from product/cart.
+
+- Checkout
+-- part of cart page
+-- user must provide name and number before clicking "Checkout"
+--- name must be letters only, phone must be numebers only (use RegEx)
+-- Clicking "Checkout" displays confirmed order message.
+--- no need to save the order, just display the message.
+
+- Search
+-- Full-text search feature
+--- with real-time changes
+
