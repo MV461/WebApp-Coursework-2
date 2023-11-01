@@ -6,6 +6,14 @@
 	"image": "mcr.microsoft.com/devcontainers/base:alpine-3.18",
 	"features": {
 		"ghcr.io/devcontainers/features/git:1": {}
+	},
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"ms-vscode.live-server",
+				"mhutchie.git-graph"
+			]
+		}
 	}
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
