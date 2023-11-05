@@ -6,7 +6,7 @@
             "location": "ABC",
             "price": 100,
             "spaces": 5,
-            "icon": "fa fa-book-reader fa-7x"
+            "icon": "fa-solid fa-book-reader fa-5x"
         },
         {
             "id": 2,
@@ -14,7 +14,7 @@
             "location": "BCD",
             "price": 200,
             "spaces": 5,
-            "icon": "TBD"
+            "icon": "fa-solid fa-calculator fa-5x"
         },
         {
             "id": 3,
@@ -22,7 +22,7 @@
             "location": "CDE",
             "price": 300,
             "spaces": 5,
-            "icon": "TBD"
+            "icon": "fa-solid fa-vial fa-5x"
         },
         {
             "id": 4,
@@ -30,7 +30,7 @@
             "location": "DEF",
             "price": 400,
             "spaces": 5,
-            "icon": "TBD"
+            "icon": "fa-solid fa-wave-square fa-5x"
         },
         {
             "id": 5,
@@ -38,7 +38,7 @@
             "location": "EFG",
             "price": 500,
             "spaces": 5,
-            "icon": "TBD"
+            "icon": "fa-solid fa-dna fa-5x"
         },
         {
             "id": 6,
@@ -46,7 +46,7 @@
             "location": "FGH",
             "price": 600,
             "spaces": 5,
-            "icon": "TBD"
+            "icon": "fa-regular fa-futbol fa-5x"
         },
         {
             "id": 7,
@@ -54,7 +54,7 @@
             "location": "GHI",
             "price": 700,
             "spaces": 5,
-            "icon": "TBD"
+            "icon": "fa-solid fa-basketball fa-5x"
         },
         {
             "id": 8,
@@ -62,7 +62,7 @@
             "location": "HIJ",
             "price": 800,
             "spaces": 5,
-            "icon": "TBD"
+            "icon": "fa-solid fa-hand-fist fa-5x"
         },
         {
             "id": 9,
@@ -70,7 +70,7 @@
             "location": "IJK",
             "price": 900,
             "spaces": 5,
-            "icon": "TBD"
+            "icon": "fa-solid fa-music fa-5x"
         },
         {
             "id": 10,
@@ -78,7 +78,7 @@
             "location": "JKL",
             "price": 1000,
             "spaces": 5,
-            "icon": "TBD"
+            "icon": "fa-solid fa-palette fa-5x"
         }
     ] 
 }
