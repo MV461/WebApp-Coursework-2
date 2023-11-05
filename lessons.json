@@ -3,15 +3,15 @@
         {
             "id": 1,
             "subject": "English",
-            "location": "idk",
+            "location": "ABC",
             "price": 100,
             "spaces": 5,
-            "icon": "TBD"
+            "icon": "fa fa-book-reader fa-7x"
         },
         {
             "id": 2,
             "subject": "Maths",
-            "location": "idk",
+            "location": "BCD",
             "price": 200,
             "spaces": 5,
             "icon": "TBD"
@@ -19,7 +19,7 @@
         {
             "id": 3,
             "subject": "Chemistry",
-            "location": "idk",
+            "location": "CDE",
             "price": 300,
             "spaces": 5,
             "icon": "TBD"
@@ -27,7 +27,7 @@
         {
             "id": 4,
             "subject": "Physics",
-            "location": "idk",
+            "location": "DEF",
             "price": 400,
             "spaces": 5,
             "icon": "TBD"
@@ -35,7 +35,7 @@
         {
             "id": 5,
             "subject": "Biology",
-            "location": "idk",
+            "location": "EFG",
             "price": 500,
             "spaces": 5,
             "icon": "TBD"
@@ -43,7 +43,7 @@
         {
             "id": 6,
             "subject": "Football",
-            "location": "idk",
+            "location": "FGH",
             "price": 600,
             "spaces": 5,
             "icon": "TBD"
@@ -51,7 +51,7 @@
         {
             "id": 7,
             "subject": "Basketball",
-            "location": "idk",
+            "location": "GHI",
             "price": 700,
             "spaces": 5,
             "icon": "TBD"
@@ -59,7 +59,7 @@
         {
             "id": 8,
             "subject": "MMA",
-            "location": "idk",
+            "location": "HIJ",
             "price": 800,
             "spaces": 5,
             "icon": "TBD"
@@ -67,7 +67,7 @@
         {
             "id": 9,
             "subject": "Music",
-            "location": "idk",
+            "location": "IJK",
             "price": 900,
             "spaces": 5,
             "icon": "TBD"
@@ -75,7 +75,7 @@
         {
             "id": 10,
             "subject": "Art",
-            "location": "idk",
+            "location": "JKL",
             "price": 1000,
             "spaces": 5,
             "icon": "TBD"
