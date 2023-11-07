@@ -37,117 +37,133 @@
 
 <body>
 
-    <!-- Navbar START -->
-    <nav class="navbar navbar-expand-md bg-body-tertiary">
-        <div class="container-fluid">
+    <div class="row">
+        <!-- Navbar START -->
+        <nav class="navbar navbar-expand-md bg-body-tertiary p-2">
+            <div class="container-fluid">
 
-            <!-- NavBar Brand START -->
-            <span class="navbar-brand mb-0 h1">My Navbar</span>
-            <!-- NavBar Brand END -->
+                <!-- NavBar Brand START -->
+                <span class="navbar-brand mb-0 h1">Lesson Shop</span>
+                <!-- NavBar Brand END -->
 
-            <!-- Hamburger Menu Button START -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <!-- Hamburger Menu Button END -->
+                <!-- Hamburger Menu Button START -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <!-- Hamburger Menu Button END -->
 
-            <!-- Nav Links START -->
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <div class="navbar-nav mx-auto">
-                    <a class="nav-link p-2 rounded-pill" href="#">Home</a>
+                <!-- Nav Links START -->
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <div class="navbar-nav mx-auto">
+                        <a class="nav-link p-2 rounded-pill" href="#">Products</a>
+                    </div>
+                    <a id="cart" class="nav-link p-2 rounded-pill" href="#">Cart</a>
                 </div>
-                <a id="cart" class="nav-link p-2 rounded-pill" href="#"> Test</a>
+                <!-- Nav Links END -->
+
             </div>
-            <!-- Nav Links END -->
+        </nav>
+        <!-- Navbar END -->
+    </div>
 
+    <div class="row p-2 pt-4">
+        <div class="col-md-2">
+            <aside class="border h-100">
+                <h2 class="border border-primary">Sorting Column</h2>
+            </aside>
         </div>
-    </nav>
-    <!-- Navbar END -->
 
-    <main id="app" class="m-4">
+        <div class="col-md-10">
+            <main id="app">
 
-        <div v-if="lessons">
+                <div v-if="lessons">
 
-            <!-- Card Group START -->
-            <div class="row row-cols-1 row-cols-md-3 g-4">
+                    <!-- Card Group START -->
+                    <div class="row row-cols-1 row-cols-md-3 g-4">
 
-                <!-- Card Column START -->
-                <div class="col" v-for="lesson in lessons" :key="lesson.id">
+                        <!-- Card Column START -->
+                        <div class="col" v-for="lesson in lessons" :key="lesson.id">
 
-                    <!-- Card START -->
-                    <div class="card text-center">
-                        <!-- Card Row START -->
-                        <div class="row g-0">
+                            <!-- Card START -->
+                            <div class="card text-center">
+                                <!-- Card Row START -->
+                                <div class="row g-0">
 
-                            <!-- Card Col 1 START -->
-                            <div class="col-md-4 d-flex justify-content-center align-items-center">
+                                    <!-- Card Col 1 START -->
+                                    <div class="col-md-4 d-flex justify-content-center align-items-center">
 
-                                <!-- Card Icon START -->
-                                <span class="card-icon">
-                                    <i :class="lesson.icon"></i>
-                                </span>
-                                <!-- Card Icon END -->
+                                        <!-- Card Icon START -->
+                                        <span class="card-icon">
+                                            <i :class="lesson.icon"></i>
+                                        </span>
+                                        <!-- Card Icon END -->
+
+                                    </div>
+                                    <!-- Card Col 1 END -->
+
+                                    <!-- Card Col 2 START -->
+                                    <div class="col-md-8 bg-light">
+
+                                        <!-- Card Header START -->
+                                        <div class="card-header">
+                                            {{ lesson.subject }} Lessons
+                                        </div>
+                                        <!-- Card Header END -->
+
+                                        <!-- Card Body START -->
+                                        <div class="card-body">
+
+                                            <table class="table table-bordered">
+                                                <tbody>
+                                                    <tr>
+                                                        <td><strong>Location</strong></td>
+                                                        <td>{{ lesson.location }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><strong>Price</strong></td>
+                                                        <td>{{ lesson.price }} AED</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><strong>Available Spaces</strong></td>
+                                                        <td>{{ lesson.spaces }}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+
+                                        </div>
+                                        <!-- Card Body END -->
+
+                                        <div class="card-footer">
+                                            <button class="btn btn-primary m-2">Add to Cart</button>
+                                        </div>
+
+                                    </div>
+                                    <!-- Card Col 2 END -->
+
+
+                                </div>
+                                <!-- Card Row END -->
 
                             </div>
-                            <!-- Card Col 1 END -->
-
-                            <!-- Card Col 2 START -->
-                            <div class="col-md-8 bg-light">
-
-                                <!-- Card Header START -->
-                                <div class="card-header">
-                                    {{ lesson.subject }} Lessons
-                                </div>
-                                <!-- Card Header END -->
-
-                                <!-- Card Body START -->
-                                <div class="card-body">
-
-                                    <table class="table table-bordered">
-                                        <tbody>
-                                            <tr>
-                                                <td><strong>Location</strong></td>
-                                                <td>{{ lesson.location }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>Price</strong></td>
-                                                <td>{{ lesson.price }} AED</td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>Available Spaces</strong></td>
-                                                <td>{{ lesson.spaces }}</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-
-                                </div>
-                                <!-- Card Body END -->
-
-                                <div class="card-footer">
-                                    <button class="btn btn-primary m-2">Add to Cart</button>
-                                </div>
-
-                            </div>
-                            <!-- Card Col 2 END -->
-
+                            <!-- Card END -->
 
                         </div>
-                        <!-- Card Row END -->
-
+                        <!-- Card Column START -->
                     </div>
-                    <!-- Card END -->
-
+                    <!-- Card Group END -->
                 </div>
-                <!-- Card Column START -->
-            </div>
-            <!-- Card Group END -->
-        </div>
 
-        <div v-else>
-            <h1>Loading JSON data...</h1>
-        </div>
+                <div v-else>
+                    <h1>Loading JSON data...</h1>
+                </div>
 
-    </main>
+            </main>
+        </div>
+    </div>
+
+
+
+
 
     <script>
         let webstore = new Vue({
