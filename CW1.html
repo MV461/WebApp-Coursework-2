@@ -206,8 +206,7 @@
             data: {
                 lessons: null,
                 sortOption: "price",
-                orderOption: "ascending",
-                currentOrder: "asc"
+                orderOption: "ascending"
             },
 
             created() {
@@ -255,30 +254,15 @@
 
                     switch (this.orderOption) {
                         case 'ascending':
-                            if (this.currentOrder === "desc") {
-                                this.currentOrder = "asc";
-                            }
                             break;
 
                         case 'descending':
-                            if (this.currentOrder === "asc") {
-                                this.lessons.reverse();
-                                this.currentOrder = "desc";
-                            }
+                            this.lessons.reverse();
                             break;
 
                         default:
                             alert('AHHHHHHHHHHHH SOMETHING BROKE IN THE ORDER OPTIONS!!!!!!');
                     }
-                    console.log("After operations");
-                    console.log("Sort Option:", this.sortOption);
-                    console.log("Order Option:", this.orderOption);
-                }
-            },
-            watch: {
-                sortOption(val) {
-                    this.currentOrder = "asc";
-
                 }
             }
         });
