@@ -5,7 +5,7 @@
             "subject": "English",
             "location": "ABC",
             "price": 100,
-            "spaces": 5,
+            "spaces": 20,
             "icon": "fa-solid fa-book-reader fa-5x"
         },
         {
@@ -13,7 +13,7 @@
             "subject": "Maths",
             "location": "BCD",
             "price": 200,
-            "spaces": 5,
+            "spaces": 16,
             "icon": "fa-solid fa-calculator fa-5x"
         },
         {
@@ -21,7 +21,7 @@
             "subject": "Chemistry",
             "location": "CDE",
             "price": 300,
-            "spaces": 5,
+            "spaces": 6,
             "icon": "fa-solid fa-vial fa-5x"
         },
         {
@@ -37,7 +37,7 @@
             "subject": "Biology",
             "location": "EFG",
             "price": 500,
-            "spaces": 5,
+            "spaces": 10,
             "icon": "fa-solid fa-dna fa-5x"
         },
         {
@@ -45,7 +45,7 @@
             "subject": "Football",
             "location": "FGH",
             "price": 600,
-            "spaces": 5,
+            "spaces": 2,
             "icon": "fa-regular fa-futbol fa-5x"
         },
         {
@@ -77,8 +77,8 @@
             "subject": "Art",
             "location": "JKL",
             "price": 1000,
-            "spaces": 5,
+            "spaces": 3,
             "icon": "fa-solid fa-palette fa-5x"
         }
-    ] 
+    ]
 }

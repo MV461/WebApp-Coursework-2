@@ -74,41 +74,35 @@
                     <div class="border p-3">
                         <h2>Sort By:</h2>
 
-                        <input type="radio" class="btn-check" name="sort-group" id="price"
-                        value="price"
-                        v-model="sortOption"
-                        @change="sortOrderSelect">
+                        <input type="radio" class="btn-check" name="sort-group" id="subject" value="subject"
+                            v-model="sortOption" @change="sortOrderSelect">
+                        <label class="btn" for="subject">Subject</label>
+
+                        <input type="radio" class="btn-check" name="sort-group" id="price" value="price"
+                            v-model="sortOption" @change="sortOrderSelect">
                         <label class="btn" for="price">Price</label>
 
 
-                        <input type="radio" class="btn-check" name="sort-group" id="location"
-                        value="location"
-                        v-model="sortOption"
-                        @change="sortOrderSelect">
+                        <input type="radio" class="btn-check" name="sort-group" id="location" value="location"
+                            v-model="sortOption" @change="sortOrderSelect">
                         <label class="btn" for="location">Location</label>
 
 
-                        <input type="radio" class="btn-check" name="sort-group" id="spaces"
-                        value="spaces"
-                        v-model="sortOption"
-                        @change="sortOrderSelect">
+                        <input type="radio" class="btn-check" name="sort-group" id="spaces" value="spaces"
+                            v-model="sortOption" @change="sortOrderSelect">
                         <label class="btn" for="spaces">Spaces</label>
                     </div>
 
                     <div class="border p-3">
                         <h2>Order By:</h2>
 
-                        <input type="radio" class="btn-check" name="order-group" id="ascending"
-                        value="ascending"
-                        v-model="orderOption"
-                        @change="sortOrderSelect">
+                        <input type="radio" class="btn-check" name="order-group" id="ascending" value="ascending"
+                            v-model="orderOption" @change="sortOrderSelect">
                         <label class="btn" for="ascending">Ascending</label>
 
 
-                        <input type="radio" class="btn-check" name="order-group" id="descending"
-                        value="descending"
-                        v-model="orderOption"
-                        @change="sortOrderSelect">
+                        <input type="radio" class="btn-check" name="order-group" id="descending" value="descending"
+                            v-model="orderOption" @change="sortOrderSelect">
                         <label class="btn" for="descending">Descending</label>
                     </div>
 
@@ -212,9 +206,12 @@
             data: {
                 lessons: null,
                 sortOption: "price",
-                orderOption: "ascending"
+                orderOption: "ascending",
+                currentOrder: "asc"
             },
+
             created() {
+                console.log("Triggered created!!")
                 // Using created() to initialise values before it gets used.
                 // Need to use Fetch API, as 'import' is not available.
                 fetch('lessons.json')
@@ -231,11 +228,57 @@
                         console.error('Error loading JSON data', error);
                     });
             },
+
             methods: {
                 sortOrderSelect() {
-                    console.log("Clicked the radio button!");
+
+                    switch (this.sortOption) {
+                        case 'subject':
+                            this.lessons.sort((lesson1, lesson2) => lesson1.subject.localeCompare(lesson2.subject));
+                            break;
+
+                        case 'price':
+                            this.lessons.sort((lesson1, lesson2) => (lesson1.price - lesson2.price));
+                            break;
+
+                        case 'location':
+                            this.lessons.sort((lesson1, lesson2) => lesson1.location.localeCompare(lesson2.location));
+                            break;
+
+                        case 'spaces':
+                            this.lessons.sort((lesson1, lesson2) => (lesson1.spaces - lesson2.spaces));
+                            break;
+
+                        default:
+                            alert('AHHHHHHHHHHHH SOMETHING BROKE IN THE SORT OPTIONS!!!!!!');
+                    }
+
+                    switch (this.orderOption) {
+                        case 'ascending':
+                            if (this.currentOrder === "desc") {
+                                this.currentOrder = "asc";
+                            }
+                            break;
+
+                        case 'descending':
+                            if (this.currentOrder === "asc") {
+                                this.lessons.reverse();
+                                this.currentOrder = "desc";
+                            }
+                            break;
+
+                        default:
+                            alert('AHHHHHHHHHHHH SOMETHING BROKE IN THE ORDER OPTIONS!!!!!!');
+                    }
+                    console.log("After operations");
                     console.log("Sort Option:", this.sortOption);
                     console.log("Order Option:", this.orderOption);
+                }
+            },
+            watch: {
+                sortOption(val) {
+                    this.currentOrder = "asc";
+
                 }
             }
         });
