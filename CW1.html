@@ -66,128 +66,143 @@
         <!-- Navbar END -->
     </div>
 
-    <div class="row p-2 pt-4">
-        <div class="col-md-3">
-            <aside class="h-100 mb-5">
-                <div class="border p-3">
-                    <h2>Sort By:</h2>
+    <div id="app">
+        <div class="row p-2 pt-4">
+            <div class="col-md-3">
+                <aside class="h-100 mb-5">
 
-                    <input type="radio" class="btn-check" name="sort-group" id="price" autocomplete="off" checked>
-                    <label class="btn" for="price">Price</label>
+                    <div class="border p-3">
+                        <h2>Sort By:</h2>
 
-
-                    <input type="radio" class="btn-check" name="sort-group" id="location" autocomplete="off">
-                    <label class="btn" for="location">Location</label>
-
-
-                    <input type="radio" class="btn-check" name="sort-group" id="spaces" autocomplete="off">
-                    <label class="btn" for="spaces">Spaces</label>
-                </div>
-                <div class="border p-3">
-                    <h2>Order By:</h2>
-
-                    <input type="radio" class="btn-check" name="order-group" id="ascending" autocomplete="off" checked>
-                    <label class="btn" for="ascending">Ascending</label>
+                        <input type="radio" class="btn-check" name="sort-group" id="price"
+                        value="price"
+                        v-model="sortOption"
+                        @change="sortOrderSelect">
+                        <label class="btn" for="price">Price</label>
 
 
-                    <input type="radio" class="btn-check" name="order-group" id="descending" autocomplete="off">
-                    <label class="btn" for="descending">Descending</label>
-                </div>
+                        <input type="radio" class="btn-check" name="sort-group" id="location"
+                        value="location"
+                        v-model="sortOption"
+                        @change="sortOrderSelect">
+                        <label class="btn" for="location">Location</label>
 
 
+                        <input type="radio" class="btn-check" name="sort-group" id="spaces"
+                        value="spaces"
+                        v-model="sortOption"
+                        @change="sortOrderSelect">
+                        <label class="btn" for="spaces">Spaces</label>
+                    </div>
 
-            </aside>
-        </div>
+                    <div class="border p-3">
+                        <h2>Order By:</h2>
 
-        <div class="col-md-9">
-            <main id="app">
+                        <input type="radio" class="btn-check" name="order-group" id="ascending"
+                        value="ascending"
+                        v-model="orderOption"
+                        @change="sortOrderSelect">
+                        <label class="btn" for="ascending">Ascending</label>
 
-                <div v-if="lessons">
 
-                    <!-- Card Group START -->
-                    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                        <input type="radio" class="btn-check" name="order-group" id="descending"
+                        value="descending"
+                        v-model="orderOption"
+                        @change="sortOrderSelect">
+                        <label class="btn" for="descending">Descending</label>
+                    </div>
 
-                        <!-- Card Column START -->
-                        <div class="col" v-for="lesson in lessons" :key="lesson.id">
+                </aside>
+            </div>
 
-                            <!-- Card START -->
-                            <div class="card text-center">
-                                <!-- Card Row START -->
-                                <div class="row g-0">
+            <div class="col-md-9">
+                <main>
 
-                                    <!-- Card Col 1 START -->
-                                    <div class="col-md-4 d-flex justify-content-center align-items-center">
+                    <div v-if="lessons">
 
-                                        <!-- Card Icon START -->
-                                        <span class="card-icon p-2">
-                                            <i :class="lesson.icon"></i>
-                                        </span>
-                                        <!-- Card Icon END -->
+                        <!-- Card Group START -->
+                        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+
+                            <!-- Card Column START -->
+                            <div class="col" v-for="lesson in lessons" :key="lesson.id">
+
+                                <!-- Card START -->
+                                <div class="card text-center">
+                                    <!-- Card Row START -->
+                                    <div class="row g-0">
+
+                                        <!-- Card Col 1 START -->
+                                        <div class="col-md-4 d-flex justify-content-center align-items-center">
+
+                                            <!-- Card Icon START -->
+                                            <span class="card-icon p-2">
+                                                <i :class="lesson.icon"></i>
+                                            </span>
+                                            <!-- Card Icon END -->
+
+                                        </div>
+                                        <!-- Card Col 1 END -->
+
+                                        <!-- Card Col 2 START -->
+                                        <div class="col-md-8 bg-light">
+
+                                            <!-- Card Header START -->
+                                            <div class="card-header">
+                                                {{ lesson.subject }} Lessons
+                                            </div>
+                                            <!-- Card Header END -->
+
+                                            <!-- Card Body START -->
+                                            <div class="card-body">
+
+                                                <table class="table table-bordered">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td><strong>Location</strong></td>
+                                                            <td>{{ lesson.location }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><strong>Price</strong></td>
+                                                            <td>{{ lesson.price }} AED</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><strong>Available Spaces</strong></td>
+                                                            <td>{{ lesson.spaces }}</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+
+                                            </div>
+                                            <!-- Card Body END -->
+
+                                            <div class="card-footer">
+                                                <button class="btn btn-primary m-2">Add to Cart</button>
+                                            </div>
+
+                                        </div>
+                                        <!-- Card Col 2 END -->
+
 
                                     </div>
-                                    <!-- Card Col 1 END -->
-
-                                    <!-- Card Col 2 START -->
-                                    <div class="col-md-8 bg-light">
-
-                                        <!-- Card Header START -->
-                                        <div class="card-header">
-                                            {{ lesson.subject }} Lessons
-                                        </div>
-                                        <!-- Card Header END -->
-
-                                        <!-- Card Body START -->
-                                        <div class="card-body">
-
-                                            <table class="table table-bordered">
-                                                <tbody>
-                                                    <tr>
-                                                        <td><strong>Location</strong></td>
-                                                        <td>{{ lesson.location }}</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><strong>Price</strong></td>
-                                                        <td>{{ lesson.price }} AED</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><strong>Available Spaces</strong></td>
-                                                        <td>{{ lesson.spaces }}</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-
-                                        </div>
-                                        <!-- Card Body END -->
-
-                                        <div class="card-footer">
-                                            <button class="btn btn-primary m-2">Add to Cart</button>
-                                        </div>
-
-                                    </div>
-                                    <!-- Card Col 2 END -->
-
+                                    <!-- Card Row END -->
 
                                 </div>
-                                <!-- Card Row END -->
+                                <!-- Card END -->
 
                             </div>
-                            <!-- Card END -->
-
+                            <!-- Card Column START -->
                         </div>
-                        <!-- Card Column START -->
+                        <!-- Card Group END -->
                     </div>
-                    <!-- Card Group END -->
-                </div>
 
-                <div v-else>
-                    <h1>Loading JSON data...</h1>
-                </div>
+                    <div v-else>
+                        <h1>Loading JSON data...</h1>
+                    </div>
 
-            </main>
+                </main>
+            </div>
         </div>
     </div>
-
-
 
 
 
@@ -195,7 +210,9 @@
         let webstore = new Vue({
             el: "#app",
             data: {
-                lessons: null
+                lessons: null,
+                sortOption: "price",
+                orderOption: "ascending"
             },
             created() {
                 // Using created() to initialise values before it gets used.
@@ -213,6 +230,13 @@
                     .catch(error => {
                         console.error('Error loading JSON data', error);
                     });
+            },
+            methods: {
+                sortOrderSelect() {
+                    console.log("Clicked the radio button!");
+                    console.log("Sort Option:", this.sortOption);
+                    console.log("Order Option:", this.orderOption);
+                }
             }
         });
     </script>
