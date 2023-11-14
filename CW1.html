@@ -67,13 +67,39 @@
     </div>
 
     <div class="row p-2 pt-4">
-        <div class="col-md-2">
-            <aside class="border h-100">
-                <h2 class="border border-primary">Sorting Column</h2>
+        <div class="col-md-3">
+            <aside class="h-100 mb-5">
+                <div class="border p-3">
+                    <h2>Sort By:</h2>
+
+                    <input type="radio" class="btn-check" name="sort-group" id="price" autocomplete="off" checked>
+                    <label class="btn" for="price">Price</label>
+
+
+                    <input type="radio" class="btn-check" name="sort-group" id="location" autocomplete="off">
+                    <label class="btn" for="location">Location</label>
+
+
+                    <input type="radio" class="btn-check" name="sort-group" id="spaces" autocomplete="off">
+                    <label class="btn" for="spaces">Spaces</label>
+                </div>
+                <div class="border p-3">
+                    <h2>Order By:</h2>
+
+                    <input type="radio" class="btn-check" name="order-group" id="ascending" autocomplete="off" checked>
+                    <label class="btn" for="ascending">Ascending</label>
+
+
+                    <input type="radio" class="btn-check" name="order-group" id="descending" autocomplete="off">
+                    <label class="btn" for="descending">Descending</label>
+                </div>
+
+
+
             </aside>
         </div>
 
-        <div class="col-md-10">
+        <div class="col-md-9">
             <main id="app">
 
                 <div v-if="lessons">
@@ -93,7 +119,7 @@
                                     <div class="col-md-4 d-flex justify-content-center align-items-center">
 
                                         <!-- Card Icon START -->
-                                        <span class="card-icon">
+                                        <span class="card-icon p-2">
                                             <i :class="lesson.icon"></i>
                                         </span>
                                         <!-- Card Icon END -->
