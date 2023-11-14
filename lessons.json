@@ -4,7 +4,7 @@
             "id": 1,
             "subject": "English",
             "location": "ABC",
-            "price": 100,
+            "price": 200,
             "spaces": 20,
             "icon": "fa-solid fa-book-reader fa-5x"
         },
@@ -12,7 +12,7 @@
             "id": 2,
             "subject": "Maths",
             "location": "BCD",
-            "price": 200,
+            "price": 100,
             "spaces": 16,
             "icon": "fa-solid fa-calculator fa-5x"
         },
@@ -20,7 +20,7 @@
             "id": 3,
             "subject": "Chemistry",
             "location": "CDE",
-            "price": 300,
+            "price": 150,
             "spaces": 6,
             "icon": "fa-solid fa-vial fa-5x"
         },
