@@ -120,7 +120,7 @@
                         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
 
                             <!-- Card Column START -->
-                            <div class="col" v-for="lesson in lessons" :key="lesson.id">
+                            <div class="col" v-for="lesson in orderedLessons" :key="lesson.id">
 
                                 <!-- Card START -->
                                 <div class="card text-center">
@@ -208,7 +208,6 @@
             data: {
                 lessons: null,
                 search: "",
-                lessons_trueCopy: null,
                 sortOption: "price",
                 orderOption: "ascending"
             },
@@ -225,67 +224,38 @@
                     })
                     .then(data => {
                         this.lessons = data.lessons;
-                        this.lessons_trueCopy = this.lessons.slice();
-                        this.filterSortOrder();
                     })
                     .catch(error => {
                         console.error('Error loading JSON data', error);
                     });
             },
 
-            methods: {
-                filterSortOrder() {
-
-                    const query = this.search.trim().toLowerCase();
-                    this.lessons = this.lessons_trueCopy.filter(
+            methods: {},
+            computed: {
+                filteredLessons() {
+                    return this.lessons.filter(
                         (lesson) => ['subject', 'location'].some(
-                            (attribute) => lesson[attribute].toLowerCase().includes(query)
+                            (attribute) => lesson[attribute].toLowerCase().includes(this.search.toLowerCase())
                         )
                     )
-
-                    switch (this.sortOption) {
-                        case 'subject':
-                            this.lessons.sort((lesson1, lesson2) => lesson1.subject.localeCompare(lesson2.subject));
-                            break;
-
-                        case 'price':
-                            this.lessons.sort((lesson1, lesson2) => (lesson1.price - lesson2.price));
-                            break;
-
-                        case 'location':
-                            this.lessons.sort((lesson1, lesson2) => lesson1.location.localeCompare(lesson2.location));
-                            break;
-
-                        case 'spaces':
-                            this.lessons.sort((lesson1, lesson2) => (lesson1.spaces - lesson2.spaces));
-                            break;
-
-                        default:
-                            alert('AHHHHHHHHHHHH SOMETHING BROKE IN THE SORT OPTIONS!!!!!!');
-                    }
-
-                    switch (this.orderOption) {
-                        case 'ascending':
-                            break;
-
-                        case 'descending':
-                            this.lessons.reverse();
-                            break;
-
-                        default:
-                            alert('AHHHHHHHHHHHH SOMETHING BROKE IN THE ORDER OPTIONS!!!!!!');
-                    }
-                }
-            },
-            watch: {
-                sortOption(newVal) {
-                    this.filterSortOrder();
                 },
-                orderOption(newVal) {
-                    this.filterSortOrder();
+
+                sortedLessons() {
+                    const sortFunctions = {
+                        'subject': (lesson1, lesson2) => lesson1.subject.localeCompare(lesson2.subject),
+                        'price': (lesson1, lesson2) => lesson1.price - lesson2.price,
+                        'location': (lesson1, lesson2) => lesson1.location.localeCompare(lesson2.location),
+                        'spaces': (lesson1, lesson2) => lesson1.spaces - lesson2.spaces
+                    };
+
+                    return this.filteredLessons.sort(sortFunctions[this.sortOption]);
                 },
-                search(newVal) {
-                    this.filterSortOrder();
+
+                orderedLessons(){
+                    if (this.orderOption === 'descending'){
+                        return this.sortedLessons.slice().reverse();
+                    }
+                    return this.sortedLessons;
                 }
             }
         });
