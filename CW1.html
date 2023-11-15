@@ -75,21 +75,21 @@
                         <h2>Sort By:</h2>
 
                         <input type="radio" class="btn-check" name="sort-group" id="subject" value="subject"
-                            v-model="sortOption" @change="sortAndOrder">
+                            v-model="sortOption">
                         <label class="btn" for="subject">Subject</label>
 
                         <input type="radio" class="btn-check" name="sort-group" id="price" value="price"
-                            v-model="sortOption" @change="sortAndOrder">
+                            v-model="sortOption">
                         <label class="btn" for="price">Price</label>
 
 
                         <input type="radio" class="btn-check" name="sort-group" id="location" value="location"
-                            v-model="sortOption" @change="sortAndOrder">
+                            v-model="sortOption">
                         <label class="btn" for="location">Location</label>
 
 
                         <input type="radio" class="btn-check" name="sort-group" id="spaces" value="spaces"
-                            v-model="sortOption" @change="sortAndOrder">
+                            v-model="sortOption">
                         <label class="btn" for="spaces">Spaces</label>
                     </div>
 
@@ -97,12 +97,12 @@
                         <h2>Order By:</h2>
 
                         <input type="radio" class="btn-check" name="order-group" id="ascending" value="ascending"
-                            v-model="orderOption" @change="sortAndOrder">
+                            v-model="orderOption">
                         <label class="btn" for="ascending">Ascending</label>
 
 
                         <input type="radio" class="btn-check" name="order-group" id="descending" value="descending"
-                            v-model="orderOption" @change="sortAndOrder">
+                            v-model="orderOption">
                         <label class="btn" for="descending">Descending</label>
                     </div>
 
@@ -111,7 +111,8 @@
 
             <div class="col-md-9">
                 <main>
-                    <input type="text" class="form-control form-control-lg mb-3" placeholder="Search Products..." v-model="search">
+                    <input type="text" class="form-control form-control-lg mb-3" placeholder="Search Products..."
+                        v-model="search">
 
                     <div v-if="lessons">
 
@@ -225,7 +226,7 @@
                     .then(data => {
                         this.lessons = data.lessons;
                         this.lessons_trueCopy = this.lessons.slice();
-                        this.sortAndOrder();
+                        this.filterSortOrder();
                     })
                     .catch(error => {
                         console.error('Error loading JSON data', error);
@@ -233,7 +234,14 @@
             },
 
             methods: {
-                sortAndOrder() {
+                filterSortOrder() {
+
+                    const query = this.search.trim().toLowerCase();
+                    this.lessons = this.lessons_trueCopy.filter(
+                        (lesson) => ['subject', 'location'].some(
+                            (attribute) => lesson[attribute].toLowerCase().includes(query)
+                        )
+                    )
 
                     switch (this.sortOption) {
                         case 'subject':
@@ -267,6 +275,17 @@
                         default:
                             alert('AHHHHHHHHHHHH SOMETHING BROKE IN THE ORDER OPTIONS!!!!!!');
                     }
+                }
+            },
+            watch: {
+                sortOption(newVal) {
+                    this.filterSortOrder();
+                },
+                orderOption(newVal) {
+                    this.filterSortOrder();
+                },
+                search(newVal) {
+                    this.filterSortOrder();
                 }
             }
         });
