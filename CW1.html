@@ -18,9 +18,9 @@
         crossorigin="anonymous"></script>
     <!-- Bootstrap CDN import END -->
 
-    <!-- Font Awesome CDN import START -->
+    <!-- Font Awesome Kit import START -->
     <script src="https://kit.fontawesome.com/d0fcba61dc.js" crossorigin="anonymous"></script>
-    <!-- Font Awesome CDN import END -->
+    <!-- Font Awesome Kit import END -->
 
     <style>
         #navbarNav .nav-link:hover {
@@ -172,7 +172,15 @@
                                             <!-- Card Body END -->
 
                                             <div class="card-footer">
-                                                <button class="btn btn-primary m-2">Add to Cart</button>
+                                                <button @click="addToCart(lesson.id)" :disabled="lesson.spaces === 0"
+                                                    class="btn btn-primary m-2">
+                                                    {{ lesson.spaces === 0 ? 'No Spaces Available' : 'Add to Cart' }}
+                                                </button>
+                                                <button v-if="cart[lesson.id]" @click="removeFromCart(lesson.id)"
+                                                    class="btn btn-danger m-2">
+                                                    Remove from Cart
+                                                </button>
+
                                             </div>
 
                                         </div>
@@ -207,6 +215,7 @@
             el: "#app",
             data: {
                 lessons: null,
+                cart: {},
                 search: "",
                 sortOption: "price",
                 orderOption: "ascending"
@@ -230,12 +239,41 @@
                     });
             },
 
-            methods: {},
+            methods: {
+                addToCart(lessonID) {
+
+                    if (this.cart[lessonID]) {
+                        this.cart[lessonID]++;
+
+                    } else {
+                        this.cart[lessonID] = 1;
+                    }
+
+                    const addedLesson = this.lessons.find((lesson) => lesson.id === lessonID);
+
+                    addedLesson.spaces--;
+                },
+
+                removeFromCart(lessonID) {
+
+                    this.cart[lessonID]--;
+
+                    if (this.cart[lessonID] === 0) {
+                        delete this.cart[lessonID];
+                    }
+
+                    const addedLesson = this.lessons.find((lesson) => lesson.id === lessonID);
+
+                    addedLesson.spaces++;
+                }
+            },
+
             computed: {
                 filteredLessons() {
+                    const query = this.search.toLowerCase();
                     return this.lessons.filter(
                         (lesson) => ['subject', 'location'].some(
-                            (attribute) => lesson[attribute].toLowerCase().includes(this.search.toLowerCase())
+                            (attribute) => lesson[attribute].toLowerCase().includes(query)
                         )
                     )
                 },
@@ -251,8 +289,8 @@
                     return this.filteredLessons.sort(sortFunctions[this.sortOption]);
                 },
 
-                orderedLessons(){
-                    if (this.orderOption === 'descending'){
+                orderedLessons() {
+                    if (this.orderOption === 'descending') {
                         return this.sortedLessons.slice().reverse();
                     }
                     return this.sortedLessons;
