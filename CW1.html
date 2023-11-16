@@ -57,7 +57,7 @@
                         <div class="navbar-nav mx-auto">
                             <button @click="showCart = false" class="btn btn-outline-primary">Products</button>
                         </div>
-                        <button :disabled="!Object.keys(cart).length" @click="showCart = true"
+                        <button :disabled="!Object.keys(cart).length" @click="showCart = !showCart"
                             class="btn btn-outline-danger">Cart</button>
                     </div>
                     <!-- Nav Links END -->
@@ -69,11 +69,37 @@
 
 
         <div v-if="showCart">
-            <div class="row ms-1">
-                <h1>Cart Details</h1>
-                {{ cartContents }}
-            </div>
+            <div class="col p-3">
+                <div class="row">
+                    <h1>Cart Details</h1>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th scope="col">Subject</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Quantity</th>
+                                <th scope="col">Subtotal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="cartEntry in cartContents" :key="cartEntry.id">
+                                <td><i :class="cartEntry.icon"></i> {{ cartEntry.subject }}</td>
+                                <td>{{ cartEntry.price }}</td>
+                                <td>{{ cartEntry.quantity }}</td>
+                                <td>{{ cartEntry.subtotal }}</td>
+                            </tr>
+                        </tbody>
+                        <tfoot class="table-group-divider">
+                            <tr>
+                                <th colspan="3" scope="row">Total:</th>
+                                <td><b>{{ cartPrice }}</b></td>
+                            </tr>
+                        </tfoot>
 
+                    </table>
+                </div>
+
+            </div>
         </div>
         <div v-else>
             <div class="row p-2 pt-4">
@@ -317,19 +343,39 @@
                     let cartEntries = [];
                     Object.entries(this.cart).forEach(
                         ([lessonID, quantity]) => {
+
                             const lesson = this.lessons.find((lesson) => lesson.id === parseInt(lessonID));
                             cartEntries.push(
                                 {
-                                    id: lesson.id,
-                                    icon: lesson.icon,
+                                    id: lessonID,
+                                    icon: lesson.icon.replace(" fa-4x", ""),
                                     subject: lesson.subject,
                                     price: lesson.price,
-                                    quantity: quantity
+                                    quantity: quantity,
+                                    subtotal: lesson.price * quantity
                                 }
                             )
                         }
                     )
+
+                    cartEntries.sort((entry1, entry2) => entry1.subject.localeCompare(entry2.subject))
                     return cartEntries;
+                },
+
+                cartPrice() {
+                    let totalPrice = 0;
+
+                    Object.entries(this.cart).forEach(
+                        ([lessonID, quantity]) => {
+
+                            const lesson = this.lessons.find((lesson) => lesson.id === parseInt(lessonID));
+
+                            totalPrice += (lesson.price * quantity);
+                        }
+                    )
+
+                    return totalPrice;
+
                 }
             }
         });
