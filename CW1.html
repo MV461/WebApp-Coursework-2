@@ -98,7 +98,8 @@
                                         {{ cartTableEntry.quantity }}
                                     </span>
 
-                                    <button class="btn btn-outline-secondary m-1" v-if="cartTableEntry.lesson.spaces > 0"
+                                    <button class="btn btn-outline-secondary m-1"
+                                        v-if="cartTableEntry.lesson.spaces > 0"
                                         @click="addToCart(cartTableEntry.lesson.id)">
                                         <i class="bi bi-plus"></i>
                                     </button>
@@ -118,6 +119,25 @@
                         </tfoot>
 
                     </table>
+                </div>
+
+                <div class="row p-2 border">
+                    <h1>Order Form</h1>
+                    <form @submit.prevent="orderFormSubmit">
+                        <div class="mb-3">
+                            <label for="name-input" class="form-label">Name</label>
+                            <input @input="restrictNameInput" v-model="formData.name" placeholder="Enter Name"
+                                type="text" class="form-control" id="name-input">
+                        </div>
+                        <div class="mb-3">
+                            <label for="phoneNumber-input" class="form-label">Phone Number</label>
+                            <input @input="restrictPhoneNumberInput" v-model="formData.number"
+                                placeholder="Enter Phone Number" type="text" class="form-control"
+                                id="phoneNumber-input">
+                        </div>
+                        <button :disabled="!(formData.name && formData.number)" type="submit"
+                            class="btn btn-primary">Submit</button>
+                    </form>
                 </div>
 
             </div>
@@ -275,6 +295,10 @@
             data: {
                 lessons: null,
                 cart: {},
+                formData: {
+                    name: "",
+                    number: ""
+                },
                 showCart: false,
                 search: "",
                 sortOption: "price",
@@ -292,7 +316,7 @@
                         return response.json();
                     })
                     .then(data => {
-                        this.lessons = data.lessons;
+                        this.lessons = data;
                     })
                     .catch(error => {
                         console.error('Error loading JSON data', error);
@@ -329,6 +353,25 @@
                     const addedLesson = this.lessons.find((lesson) => lesson.id === lessonID);
 
                     addedLesson.spaces++;
+                },
+
+                orderFormSubmit() {
+                    let order = {
+                        formData: this.formData,
+                        cart: this.cart
+                    }
+
+                    alert(`Order Placed!\n\n${JSON.stringify(order, null, 2)}`)
+
+                    window.location.reload();
+                },
+
+                restrictNameInput(event) {
+                    this.formData.name = event.target.value.replace(/[^A-Za-z]/g, '')
+                },
+
+                restrictPhoneNumberInput(event) {
+                    this.formData.number = event.target.value.replace(/\D/g, '')
                 }
             },
 
@@ -336,8 +379,8 @@
                 filteredLessons() {
                     const query = this.search.toLowerCase();
                     return this.lessons.filter(
-                        (lesson) => ['subject', 'location'].some(
-                            (attribute) => lesson[attribute].toLowerCase().includes(query)
+                        (lesson) => ['subject', 'location', 'price', 'spaces'].some(
+                            (attribute) => lesson[attribute].toString().toLowerCase().includes(query)
                         )
                     )
                 },
@@ -362,7 +405,7 @@
 
                 cartTableContents() {
 
-                    if (!Object.keys(this.cart).length){
+                    if (!Object.keys(this.cart).length) {
                         this.showCart = false;
                     }
 

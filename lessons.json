@@ -1,84 +1,82 @@
-{
-    "lessons": [
-        {
-            "id": 1,
-            "subject": "English",
-            "location": "ABC",
-            "price": 200,
-            "spaces": 20,
-            "icon": "fa-solid fa-book-reader fa-4x"
-        },
-        {
-            "id": 2,
-            "subject": "Maths",
-            "location": "BCD",
-            "price": 100,
-            "spaces": 16,
-            "icon": "fa-solid fa-calculator fa-4x"
-        },
-        {
-            "id": 3,
-            "subject": "Chemistry",
-            "location": "CDE",
-            "price": 150,
-            "spaces": 6,
-            "icon": "fa-solid fa-vial fa-4x"
-        },
-        {
-            "id": 4,
-            "subject": "Physics",
-            "location": "DEF",
-            "price": 400,
-            "spaces": 5,
-            "icon": "fa-solid fa-wave-square fa-4x"
-        },
-        {
-            "id": 5,
-            "subject": "Biology",
-            "location": "EFG",
-            "price": 500,
-            "spaces": 10,
-            "icon": "fa-solid fa-dna fa-4x"
-        },
-        {
-            "id": 6,
-            "subject": "Football",
-            "location": "FGH",
-            "price": 600,
-            "spaces": 2,
-            "icon": "fa-regular fa-futbol fa-4x"
-        },
-        {
-            "id": 7,
-            "subject": "Basketball",
-            "location": "GHI",
-            "price": 700,
-            "spaces": 5,
-            "icon": "fa-solid fa-basketball fa-4x"
-        },
-        {
-            "id": 8,
-            "subject": "MMA",
-            "location": "HIJ",
-            "price": 800,
-            "spaces": 5,
-            "icon": "fa-solid fa-hand-fist fa-4x"
-        },
-        {
-            "id": 9,
-            "subject": "Music",
-            "location": "IJK",
-            "price": 900,
-            "spaces": 5,
-            "icon": "fa-solid fa-music fa-4x"
-        },
-        {
-            "id": 10,
-            "subject": "Art",
-            "location": "JKL",
-            "price": 1000,
-            "spaces": 3,
-            "icon": "fa-solid fa-palette fa-4x"
-        }
-    ]
-}
+[
+    {
+        "id": 1,
+        "subject": "English",
+        "location": "ABC",
+        "price": 200,
+        "spaces": 20,
+        "icon": "fa-solid fa-book-reader fa-4x"
+    },
+    {
+        "id": 2,
+        "subject": "Maths",
+        "location": "BCD",
+        "price": 100,
+        "spaces": 16,
+        "icon": "fa-solid fa-calculator fa-4x"
+    },
+    {
+        "id": 3,
+        "subject": "Chemistry",
+        "location": "CDE",
+        "price": 150,
+        "spaces": 6,
+        "icon": "fa-solid fa-vial fa-4x"
+    },
+    {
+        "id": 4,
+        "subject": "Physics",
+        "location": "DEF",
+        "price": 400,
+        "spaces": 5,
+        "icon": "fa-solid fa-wave-square fa-4x"
+    },
+    {
+        "id": 5,
+        "subject": "Biology",
+        "location": "EFG",
+        "price": 500,
+        "spaces": 10,
+        "icon": "fa-solid fa-dna fa-4x"
+    },
+    {
+        "id": 6,
+        "subject": "Football",
+        "location": "FGH",
+        "price": 600,
+        "spaces": 2,
+        "icon": "fa-regular fa-futbol fa-4x"
+    },
+    {
+        "id": 7,
+        "subject": "Basketball",
+        "location": "GHI",
+        "price": 700,
+        "spaces": 5,
+        "icon": "fa-solid fa-basketball fa-4x"
+    },
+    {
+        "id": 8,
+        "subject": "MMA",
+        "location": "HIJ",
+        "price": 800,
+        "spaces": 5,
+        "icon": "fa-solid fa-hand-fist fa-4x"
+    },
+    {
+        "id": 9,
+        "subject": "Music",
+        "location": "IJK",
+        "price": 900,
+        "spaces": 5,
+        "icon": "fa-solid fa-music fa-4x"
+    },
+    {
+        "id": 10,
+        "subject": "Art",
+        "location": "JKL",
+        "price": 1000,
+        "spaces": 3,
+        "icon": "fa-solid fa-palette fa-4x"
+    }
+]
