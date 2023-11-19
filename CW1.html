@@ -62,7 +62,7 @@
                             <button @click="showCart = false" class="btn btn-outline-primary">Products</button>
                         </div>
                         <div class="navbar-nav p-2">
-                            <button :disabled="!Object.keys(cart).length" @click="showCart = !showCart"
+                            <button :disabled="isCartEmpty" @click="showCart = !showCart"
                                 class="btn btn-outline-danger">Cart</button>
                         </div>
 
@@ -325,123 +325,154 @@
 
             methods: {
                 addToCart(lessonID) {
+                    const CART = this.cart;
+                    const QUANTITY_IN_CART = CART[lessonID];
+                    const ZERO_QUANTITY = null;
+                    const NEW_QUANTITY = ((QUANTITY_IN_CART == ZERO_QUANTITY) ? (1) : (QUANTITY_IN_CART + 1));
+                    const ADDED_LESSON = this.lessons.find((lesson) => lesson.id === lessonID);
 
-                    if (this.cart[lessonID]) {
-                        // this.cart[lessonID]++;
-                        this.$set(this.cart, lessonID, this.cart[lessonID] + 1)
 
-                    } else {
-                        // this.cart[lessonID] = 1;
-                        this.$set(this.cart, lessonID, 1)
-                    }
-
-                    const addedLesson = this.lessons.find((lesson) => lesson.id === lessonID);
-
-                    addedLesson.spaces--;
+                    this.$set(CART, lessonID, NEW_QUANTITY)
+                    ADDED_LESSON.spaces--;
                 },
 
                 removeFromCart(lessonID) {
+                    const CART = this.cart;
+                    const QUANTITY_IN_CART = CART[lessonID];
+                    const REDUCED_QUANTITY = QUANTITY_IN_CART - 1;
+                    const ADDED_LESSON = this.lessons.find((lesson) => lesson.id === lessonID);
 
-                    // this.cart[lessonID]--;
-                    this.$set(this.cart, lessonID, this.cart[lessonID] - 1)
 
-                    if (this.cart[lessonID] === 0) {
-                        // delete this.cart[lessonID];
-                        this.$delete(this.cart, lessonID);
-                    }
-
-                    const addedLesson = this.lessons.find((lesson) => lesson.id === lessonID);
-
-                    addedLesson.spaces++;
+                    this.$set(CART, lessonID, REDUCED_QUANTITY)
+                    if (REDUCED_QUANTITY === 0) { this.$delete(CART, lessonID); }
+                    ADDED_LESSON.spaces++;
                 },
 
                 orderFormSubmit() {
-                    let order = {
+
+                    const ORDER = {
                         formData: this.formData,
                         cart: this.cart
                     }
+                    const ORDER_STRING = JSON.stringify(ORDER, null, 2)
+                    const RELOAD_PAGE = window.location.reload();
 
-                    alert(`Order Placed!\n\n${JSON.stringify(order, null, 2)}`)
 
-                    window.location.reload();
+                    alert(`Order Placed!\n\n${ORDER_STRING}`);
+                    RELOAD_PAGE;
                 },
 
-                restrictNameInput(event) {
-                    this.formData.name = event.target.value.replace(/[^A-Za-z]/g, '')
+                restrictNameInput(nameFieldInput) {
+                    const FORM_DATA = this.formData;
+
+                    const NAME_INPUT = nameFieldInput.target.value;
+                    const NAME_REGEX = /[^A-Za-z]/g;
+                    const SANITISED_NAME_INPUT = NAME_INPUT.replace(NAME_REGEX, '');
+
+
+                    FORM_DATA["name"] = SANITISED_NAME_INPUT;
                 },
 
-                restrictPhoneNumberInput(event) {
-                    this.formData.number = event.target.value.replace(/\D/g, '')
+                restrictPhoneNumberInput(phoneNumberFieldInput) {
+                    const FORM_DATA = this.formData;
+
+                    const PHONE_NUMBER_INPUT = phoneNumberFieldInput.target.value;
+                    const PHONE_NUMBER_REGEX = /\D/g;
+                    const SANITISED_PHONE_NUMBER_INPUT = PHONE_NUMBER_INPUT.replace(PHONE_NUMBER_REGEX, '');
+
+
+                    FORM_DATA["number"] = SANITISED_PHONE_NUMBER_INPUT;
                 }
             },
 
             computed: {
                 filteredLessons() {
-                    const query = this.search.toLowerCase();
-                    return this.lessons.filter(
-                        (lesson) => ['subject', 'location', 'price', 'spaces'].some(
-                            (attribute) => lesson[attribute].toString().toLowerCase().includes(query)
+                    const LESSONS = this.lessons;
+                    const CATEGORIES_TO_SEARCH = ['subject', 'location', 'price', 'spaces'];
+                    const QUERY = this.search.toLowerCase();
+
+
+                    return LESSONS.filter(
+                        (lesson) => CATEGORIES_TO_SEARCH.some(
+                            (attribute) => {
+                                const ATTRIBUTE_VALUE = lesson[attribute];
+                                const FORMATTED_ATTRIBUTE_VALUE = ATTRIBUTE_VALUE.toString().toLowerCase();
+
+
+                                return FORMATTED_ATTRIBUTE_VALUE.includes(QUERY)
+                            }
                         )
                     )
                 },
 
                 sortedLessons() {
-                    const sortFunctions = {
+                    const FILTERED_LESSONS = this.filteredLessons;
+                    const ATTRIBUTE_TO_SORT_BY = this.sortOption;
+                    const SORT_FUNCTION_SELECTOR = {
                         'subject': (lesson1, lesson2) => lesson1.subject.localeCompare(lesson2.subject),
                         'price': (lesson1, lesson2) => lesson1.price - lesson2.price,
                         'location': (lesson1, lesson2) => lesson1.location.localeCompare(lesson2.location),
                         'spaces': (lesson1, lesson2) => lesson1.spaces - lesson2.spaces
                     };
 
-                    return this.filteredLessons.sort(sortFunctions[this.sortOption]);
+
+                    return FILTERED_LESSONS.sort(SORT_FUNCTION_SELECTOR[ATTRIBUTE_TO_SORT_BY]);
                 },
 
                 orderedLessons() {
-                    if (this.orderOption === 'descending') {
-                        return this.sortedLessons.slice().reverse();
+                    const SORTED_LESSONS = this.sortedLessons.slice();
+                    const ORDER_BY = this.orderOption;
+
+
+                    if (ORDER_BY === 'descending') {
+                        return SORTED_LESSONS.reverse();
                     }
-                    return this.sortedLessons;
+                    return SORTED_LESSONS;
                 },
 
                 cartTableContents() {
+                    const CART_IS_EMPTY = this.isCartEmpty;
+                    const CART_ITEMS = Object.entries(this.cart);
 
-                    if (!Object.keys(this.cart).length) {
+
+                    if (CART_IS_EMPTY) {
                         this.showCart = false;
+                        return;
                     }
 
                     let cartTableEntries = [];
-                    Object.entries(this.cart).forEach(
+                    CART_ITEMS.forEach(
                         ([lessonID, quantity]) => {
 
-                            const lesson = this.lessons.find((lesson) => lesson.id === parseInt(lessonID));
+                            const LESSON = this.lessons.find((lesson) => lesson.id === parseInt(lessonID));
                             cartTableEntries.push(
                                 {
-                                    lesson: lesson,
+                                    lesson: LESSON,
                                     quantity: quantity,
-                                    subtotal: lesson.price * quantity
+                                    subtotal: LESSON.price * quantity
                                 }
                             )
                         }
                     )
 
-                    cartTableEntries.sort((entry1, entry2) => entry1.lesson.subject.localeCompare(entry2.lesson.subject))
+                    cartTableEntries.sort(
+                        (entry1, entry2) => entry1.lesson.subject.localeCompare(entry2.lesson.subject)
+                    )
+
                     return cartTableEntries;
                 },
 
                 cartPrice() {
-                    let totalPrice = 0;
+                    const CART_ITEMS = this.cartTableContents;
+                    const TOTAL_PRICE = CART_ITEMS.reduce(((acc, entry) => acc + entry.subtotal), 0)
 
-                    Object.entries(this.cart).forEach(
-                        ([lessonID, quantity]) => {
 
-                            const lesson = this.lessons.find((lesson) => lesson.id === parseInt(lessonID));
+                    return TOTAL_PRICE;
 
-                            totalPrice += (lesson.price * quantity);
-                        }
-                    )
+                },
 
-                    return totalPrice;
-
+                isCartEmpty() {
+                    return !Object.keys(this.cart).length;
                 }
             }
         });
