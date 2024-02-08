@@ -8,13 +8,13 @@ const PORT = process.env.PORT || 3000;
 const uri = "mongodb+srv://mv461:uZDFRgnuQ297HPPi@myfirstcluster.5zcjeqz.mongodb.net/";
 const client = new MongoClient(uri);
 // let db, lessonsCollection, ordersCollection;
-let db;
+// let db;
 
 client.connect()
   .then(() => {
     console.log("Connected to MongoDB!")
 
-    db = client.db("webapp-cw2")
+    // db = client.db("webapp-cw2")
     // lessonsCollection = db.collection('lessons');
     // ordersCollection = db.collection('orders');
 
@@ -29,7 +29,10 @@ client.connect()
 app.use(express.static(path.join(__dirname, 'public'), { index: 'index.html' }));
 
 app.get("/lessons", (request, response) => {
-  db.collection('lessons').find({}).toArray()
+  const db = client.db('webapp-cw2');
+  const collection = db.collection('lessons');
+
+  collection.find({}).toArray()
     .then((documents) => {
       response.json(documents)
     })
