@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function () {
         created() {
             // Fetching lesson data when the Vue instance is created
             // Initializing 'lessons' data property with fetched data
-            fetch('lessons.json')
+            fetch('https://web-app-coursework-2.vercel.app/lessons')
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok');

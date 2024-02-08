@@ -1,24 +1,21 @@
 const express = require('express');
+const cors = require('cors');
 const { MongoClient } = require('mongodb');
 const path = require('path');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+app.use(cors({
+  origin: 'http://localhost:3000' // Restrict calls to those this address
+}));
+
 
 const uri = "mongodb+srv://mv461:uZDFRgnuQ297HPPi@myfirstcluster.5zcjeqz.mongodb.net/";
 const client = new MongoClient(uri);
-// let db, lessonsCollection, ordersCollection;
-// let db;
 
 client.connect()
   .then(() => {
     console.log("Connected to MongoDB!")
-
-    // db = client.db("webapp-cw2")
-    // lessonsCollection = db.collection('lessons');
-    // ordersCollection = db.collection('orders');
-
-
   })
   .catch((err) => {
     console.error("Error connecting to MongoDB or performing operation", err);
