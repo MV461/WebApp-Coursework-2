@@ -13,8 +13,8 @@ client.connect()
     console.log("Connected to MongoDB!")
 
     db = client.db("webapp-cw2")
-    lessonsCollection = db.collection('lessons');
-    ordersCollection = db.collection('orders');
+    // lessonsCollection = db.collection('lessons');
+    // ordersCollection = db.collection('orders');
 
 
   })
@@ -27,7 +27,7 @@ client.connect()
 app.use(express.static(path.join(__dirname, 'public'), { index: 'index.html' }));
 
 app.get("/lessons", (request, response) => {
-  lessonsCollection.find({}).toArray()
+  db.collection('lessons').find({}).toArray()
     .then((documents) => {
       response.json(documents)
     })
