@@ -1,5 +1,8 @@
 // Added event listener to make the loading of the page smoother.
 document.addEventListener('DOMContentLoaded', function () {
+    const protocol = window.location.protocol;
+    const baseUrl = window.location.host;
+
     // Vue instance for the web store
     let webstore = new Vue({
         el: "#app",
@@ -20,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function () {
         created() {
             // Fetching lesson data when the Vue instance is created
             // Initializing 'lessons' data property with fetched data
-            fetch('https://web-app-coursework-2.vercel.app/lessons')
+            fetch(`${protocol}//${baseUrl}/lessons`)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
