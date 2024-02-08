@@ -1,12 +1,14 @@
 const express = require('express');
 const { MongoClient } = require('mongodb');
+const path = require('path');
 
 const app = express();
-const path = require('path');
+const PORT = process.env.PORT || 3000;
 
 const uri = "mongodb+srv://mv461:uZDFRgnuQ297HPPi@myfirstcluster.5zcjeqz.mongodb.net/";
 const client = new MongoClient(uri);
-let db, lessonsCollection, ordersCollection;
+// let db, lessonsCollection, ordersCollection;
+let db;
 
 client.connect()
   .then(() => {
@@ -37,7 +39,8 @@ app.get("/lessons", (request, response) => {
 })
 
 // Set up a listener for your server
-const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
+module.exports = app;
