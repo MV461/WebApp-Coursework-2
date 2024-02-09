@@ -84,6 +84,19 @@ app.get("/lessons", (request, response) => {
     })
 })
 
+app.get("/orders", (request, response) => {
+  const db = client.db('webapp-cw2');
+  const collection = db.collection('orders');
+
+  collection.find({}).toArray()
+    .then((documents) => {
+      response.json(documents)
+    })
+    .catch((err) => {
+      response.status.send(err);
+    })
+})
+
 // Define the POST route for saving new orders
 app.post('/orders', (request, response) => {
   // Extract the order data from the request body
@@ -114,6 +127,43 @@ app.post('/orders', (request, response) => {
         response.status(500).send('An error occurred while saving the order.');
 
       }
+    });
+});
+
+app.put('/updateLesson', (request, response) => {
+  // Extract the necessary data from the request body
+  const lessonUpdateData = request.body;
+
+  // Validate the lesson update data
+  if (!lessonUpdateData.lessonId || typeof lessonUpdateData.spaces !== 'number') {
+    return response.status(400).send('Invalid lesson update data.');
+  }
+
+  if (lessonUpdateData.spaces < 0) {
+    return response.status(400).send('Remaining spaces cannot be less than 0.');
+  }
+
+  // Get a reference to the 'lessons' collection (or whatever collection you're using)
+  const db = client.db('webapp-cw2');
+  const collection = db.collection('lessons');
+
+  // Update the lesson document
+  collection.updateOne(
+    { id: lessonUpdateData.lessonId },
+    { $set: { spaces: lessonUpdateData.spaces } }
+  )
+    .then(result => {
+      if (result.matchedCount === 0) {
+        response.status(404).send(`Lesson ${lessonUpdateData.lessonId} not found.`);
+      } else if (result.modifiedCount === 0) {
+        response.status(304).send(`No changes made to the lesson ${lessonUpdateData.lessonId}.`);
+      } else {
+        response.status(200).json({ message: 'Lesson updated successfully.' });
+      }
+    })
+    .catch(error => {
+      console.error('Error updating lesson:', error);
+      response.status(500).send('An error occurred while updating the lesson.');
     });
 });
 

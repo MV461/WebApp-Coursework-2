@@ -110,26 +110,46 @@ document.addEventListener('DOMContentLoaded', function () {
                     },
                     body: ORDER_JSON_STRING
                 })
-                    .then((response) => {
-                        if (!response.ok) {
-                            return response.text().then(text => {
+                    .then((submitResponse) => {
+                        if (!submitResponse.ok) {
+                            return submitResponse.text().then(text => {
                                 throw new Error(text);
                             })
                         }
 
-                        return response.json();
+                        return submitResponse.json();
                     })
-                    .then(data => {
-                        alert(data.message);
-                        CURRENT_PAGE.reload();
+                    .then(submitData => {
+
+                        alert(submitData.message);
+
+                        const lessonIdsInCart = Object.keys(CART_ITEMS);
+
+                        const cartLessonsUpdate = lessonIdsInCart.map((lessonId) => {
+                        
+                            return fetch('https://web-app-coursework-2.vercel.app/updateLesson', {
+                                method: 'PUT',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    lessonId: +lessonId,
+                                    spaces: this.lessons.find((lesson) => lesson.id === +lessonId).spaces
+                                })
+                            });
+                        })
+
+                        return Promise.all(cartLessonsUpdate);
+
+                    })
+                    .then(() => {
+                        alert("All lessons updated successfully.");
+                        // CURRENT_PAGE.reload(true);   
                     })
                     .catch((error) => {
                         alert(error.message);
                         // Handle errors here
                     });
-
-                // Reload current page
-                // CURRENT_PAGE.reload();
             },
 
             // Restrict input in the 'name' field to alphabetic characters
