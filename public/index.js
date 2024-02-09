@@ -14,6 +14,8 @@ document.addEventListener('DOMContentLoaded', function () {
             },
             showCart: false, // Tracks whether to display the cart
             search: "", // Search query for filtering lessons
+            searchResults: [],
+            _searchTimeout: "",
             sortOption: "price", // Default sorting option for lessons
             orderOption: "ascending" // Default order for sorting (ascending/descending)
         },
@@ -30,6 +32,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 })
                 .then(data => {
                     this.lessons = data;
+                    this.searchResults = data;
                 })
                 .catch(error => {
                     console.error('Error loading JSON data', error);
@@ -126,7 +129,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         const lessonIdsInCart = Object.keys(CART_ITEMS);
 
                         const cartLessonsUpdate = lessonIdsInCart.map((lessonId) => {
-                        
+
                             return fetch('https://web-app-coursework-2.vercel.app/updateLesson', {
                                 method: 'PUT',
                                 headers: {
@@ -144,7 +147,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     })
                     .then(() => {
                         alert("All lessons updated successfully.");
-                        CURRENT_PAGE.reload(true);   
+                        CURRENT_PAGE.reload(true);
                     })
                     .catch((error) => {
                         alert(error.message);
@@ -188,26 +191,8 @@ document.addEventListener('DOMContentLoaded', function () {
         computed: {
             // Filter lessons based on the search query
             filteredLessons() {
-                // Gather all the necessary data
-                const LESSONS = this.lessons;
-                const CATEGORIES_TO_SEARCH = ['subject', 'location', 'price', 'spaces'];
-                const QUERY = this.search.toLowerCase();
+                return this.searchResults;
 
-                // Return filtered lessons
-                return LESSONS.filter(
-                    // For each lesson...
-                    (lesson) => CATEGORIES_TO_SEARCH.some(
-                        // ...and for each of its attributes...
-                        (attribute) => {
-                            // ...take its value, format it...
-                            const ATTRIBUTE_VALUE = lesson[attribute];
-                            const FORMATTED_ATTRIBUTE_VALUE = ATTRIBUTE_VALUE.toString().toLowerCase();
-
-                            // ...and check whether it includes the QUERY
-                            return FORMATTED_ATTRIBUTE_VALUE.includes(QUERY)
-                        }
-                    )
-                )
             },
 
             // Sort lessons based on selected option
@@ -293,6 +278,31 @@ document.addEventListener('DOMContentLoaded', function () {
             // Check if the cart is empty
             isCartEmpty() {
                 return !Object.keys(this.cart).length;
+            }
+        },
+
+        watch: {
+            search: {
+                handler: function (newQuery) {
+                    // Clear any existing timeout to prevent multiple requests
+                    if (this._searchTimeout) {
+                        clearTimeout(this._searchTimeout);
+                    }
+
+                    this._searchTimeout = setTimeout(() => {
+                        // Perform the fetch operation whenever the search query changes
+                        fetch(`https://web-app-coursework-2.vercel.app/search?term=${encodeURIComponent(newQuery.toLowerCase())}`)
+                            .then(response => response.json())
+                            .then(data => {
+                                // Update the searchResults data property with the fetched data
+                                this.searchResults = data;
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                            });
+                    }, 800);
+                },
+                immediate: true
             }
         }
     });

@@ -167,6 +167,38 @@ app.put('/updateLesson', (request, response) => {
     });
 });
 
+// Route to handle search requests
+app.get('/search', (req, res) => {
+  // Connect to the MongoDB server
+  MongoClient.connect(uri)
+    .then(client => {
+      const database = client.db("webapp-cw2");
+      const lessons = database.collection("lessons");
+
+      // Extract the search term from the request body
+      const searchTerm = req.query.term;
+
+      // Perform a regex search using the index
+      return lessons.find({
+        $or: [
+          { subject: { $regex: `${searchTerm}`, $options: 'i' } },
+          { location: { $regex: `${searchTerm}`, $options: 'i' } }
+        ]
+      }).toArray();
+    })
+    .then(results => {
+      // Close the database connection
+      client.close();
+
+      // Send the search results back to the client
+      res.json(results);
+    })
+    .catch(error => {
+      console.error(error);
+      res.status(500).send('Error occurred while searching');
+    });
+});
+
 // Set up a listener for your server
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
