@@ -290,7 +290,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                     this._searchTimeout = setTimeout(() => {
                         // Perform the fetch operation whenever the search query changes
-                        fetch(`http://localhost:3000/search?term=${encodeURIComponent(newQuery.toLowerCase())}`)
+                        fetch(`https://web-app-coursework-2.vercel.app/search?term=${encodeURIComponent(newQuery.toLowerCase())}`)
                             .then(response => response.json())
                             .then(data => {
                                 // Update the searchResults data property with the fetched data
