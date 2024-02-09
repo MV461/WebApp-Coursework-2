@@ -6,15 +6,6 @@ const path = require('path');
 const { MongoClient } = require('mongodb');
 
 const uri = "mongodb+srv://mv461:uZDFRgnuQ297HPPi@myfirstcluster.5zcjeqz.mongodb.net/";
-const client = new MongoClient(uri);
-
-client.connect()
-  .then(() => {
-    console.log("Connected to MongoDB!")
-  })
-  .catch((err) => {
-    console.error("Error connecting to MongoDB or performing operation", err);
-  })
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -72,28 +63,48 @@ app.get('/icon', (request, response) => {
 });
 
 app.get("/lessons", (request, response) => {
-  const db = client.db('webapp-cw2');
-  const collection = db.collection('lessons');
 
-  collection.find({}).toArray()
+  let client;
+  MongoClient.connect(uri)
+    .then((connectedClient) => {
+      client = connectedClient;
+      const db = client.db('webapp-cw2');
+      const collection = db.collection('lessons');
+
+      // Perform a find operation on the collection
+      return collection.find({}).toArray();
+    })
     .then((documents) => {
-      response.json(documents)
+
+      response.json(documents);
     })
     .catch((err) => {
-      response.status.send(err);
+      console.error(error);
+      response.status(500).send('Error occurred while fetching lessons');
+    })
+    .finally(() => {
+      client.close();
     })
 })
 
 app.get("/orders", (request, response) => {
-  const db = client.db('webapp-cw2');
-  const collection = db.collection('orders');
+  let client;
+  MongoClient.connect(uri)
+    .then((connectedClient) => {
+      client = connectedClient;
+      const db = client.db('webapp-cw2');
+      const collection = db.collection('orders');
 
-  collection.find({}).toArray()
+      return collection.find({}).toArray()
+    })
     .then((documents) => {
       response.json(documents)
     })
     .catch((err) => {
       response.status.send(err);
+    })
+    .finally(() => {
+      client.close();
     })
 })
 
@@ -107,13 +118,19 @@ app.post('/orders', (request, response) => {
     return response.status(400).send('Invalid order data.');
   }
 
-  // Get a reference to the 'orders' collection
-  const db = client.db('webapp-cw2');
-  const collection = db.collection('orders');
+  let client;
+  MongoClient.connect(uri)
+    .then((connectedClient) => {
+      client = connectedClient;
 
-  // Insert the new order into the 'orders' collection
-  collection.insertOne(orderData)
-    .then(result => {
+      // Get a reference to the 'orders' collection
+      const db = client.db('webapp-cw2');
+      const collection = db.collection('orders');
+
+      // Insert the new order into the 'orders' collection
+      return collection.insertOne(orderData)
+    })
+    .then((result) => {
       // Send a success response with the ID of the newly inserted document
       response.status(201).json({ message: 'Order saved successfully.', id: result.insertedId });
     })
@@ -127,7 +144,10 @@ app.post('/orders', (request, response) => {
         response.status(500).send('An error occurred while saving the order.');
 
       }
-    });
+    })
+    .finally(() => {
+      client.close();
+    })
 });
 
 app.put('/updateLesson', (request, response) => {
@@ -143,15 +163,17 @@ app.put('/updateLesson', (request, response) => {
     return response.status(400).send('Remaining spaces cannot be less than 0.');
   }
 
-  // Get a reference to the 'lessons' collection (or whatever collection you're using)
-  const db = client.db('webapp-cw2');
-  const collection = db.collection('lessons');
+  let client;
+  MongoClient.connect(uri)
+    .then((connectedClient) => {
+      client = connectedClient;
+      // Get a reference to the 'lessons' collection (or whatever collection you're using)
+      const db = client.db('webapp-cw2');
+      const collection = db.collection('lessons');
 
-  // Update the lesson document
-  collection.updateOne(
-    { id: lessonUpdateData.lessonId },
-    { $set: { spaces: lessonUpdateData.spaces } }
-  )
+      // Update the lesson document
+      return collection.updateOne({ id: lessonUpdateData.lessonId }, { $set: { spaces: lessonUpdateData.spaces } })
+    })
     .then(result => {
       if (result.matchedCount === 0) {
         response.status(404).send(`Lesson ${lessonUpdateData.lessonId} not found.`);
@@ -164,19 +186,25 @@ app.put('/updateLesson', (request, response) => {
     .catch(error => {
       console.error('Error updating lesson:', error);
       response.status(500).send('An error occurred while updating the lesson.');
-    });
+    })
+    .finally(() => {
+      client.close();
+    })
 });
 
 // Route to handle search requests
-app.get('/search', (req, res) => {
+app.get('/search', (request, response) => {
+
+  let client;
   // Connect to the MongoDB server
   MongoClient.connect(uri)
-    .then(client => {
+    .then((connectedClient) => {
+      client = connectedClient;
       const database = client.db("webapp-cw2");
       const lessons = database.collection("lessons");
 
       // Extract the search term from the request body
-      const searchTerm = req.query.term;
+      const searchTerm = request.query.term;
 
       // Perform a regex search using the index
       return lessons.find({
@@ -186,17 +214,17 @@ app.get('/search', (req, res) => {
         ]
       }).toArray();
     })
-    .then(results => {
-      // Close the database connection
-      client.close();
-
+    .then((results) => {
       // Send the search results back to the client
-      res.json(results);
+      response.json(results);
     })
-    .catch(error => {
+    .catch((error) => {
       console.error(error);
-      res.status(500).send('Error occurred while searching');
-    });
+      response.status(500).send('Error occurred while searching');
+    })
+    .finally(() => {
+      client.close();
+    })
 });
 
 // Set up a listener for your server
