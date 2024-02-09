@@ -91,19 +91,45 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 // Create order object and stringify for display
                 const ORDER = {
-                    formData: CUSTOMER_DETAIL,
+                    customerData: CUSTOMER_DETAIL,
                     cart: CART_ITEMS,
                     total: TOTAL_PRICE
                 };
-                const ORDER_STRING = JSON.stringify(ORDER, null, 2);
+                const ORDER_JSON_STRING = JSON.stringify(ORDER, null, 2);
 
                 // Set CURRENT_PAGE const
                 const CURRENT_PAGE = window.location;
 
-                // Generates order confirmation alert.
-                alert(`Order Placed!\n\n${ORDER_STRING}`);
+                // // Generates order confirmation alert.
+                // alert(`Order Placed!\n\n${ORDER_JSON_STRING}`);
+
+                fetch('https://web-app-coursework-2.vercel.app/orders', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: ORDER_JSON_STRING
+                })
+                    .then((response) => {
+                        if (!response.ok) {
+                            return response.text().then(text => {
+                                throw new Error(text);
+                            })
+                        }
+
+                        return response.json();
+                    })
+                    .then(data => {
+                        alert(data.message);
+                        CURRENT_PAGE.reload();
+                    })
+                    .catch((error) => {
+                        alert(error.message);
+                        // Handle errors here
+                    });
+
                 // Reload current page
-                CURRENT_PAGE.reload();
+                // CURRENT_PAGE.reload();
             },
 
             // Restrict input in the 'name' field to alphabetic characters

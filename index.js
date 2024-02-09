@@ -1,8 +1,9 @@
 const express = require('express');
 const fs = require('fs');
+const bodyParser = require('body-parser');
 const cors = require('cors');
-const { MongoClient } = require('mongodb');
 const path = require('path');
+const { MongoClient } = require('mongodb');
 
 const uri = "mongodb+srv://mv461:uZDFRgnuQ297HPPi@myfirstcluster.5zcjeqz.mongodb.net/";
 const client = new MongoClient(uri);
@@ -19,6 +20,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(cors());
+app.use(bodyParser.json());
 
 app.use((request, response, next) => {
   console.log(`${new Date().toISOString()} - ${request.method} ${request.url}`);
@@ -32,7 +34,7 @@ app.use(express.static(path.join(__dirname, 'public'), { index: 'index.html' }))
 app.get('/icon', (request, response) => {
 
   let iconNames = [];
-  const lessonsFilePath = path.join(__dirname, 'public', 'lessons.json'); 
+  const lessonsFilePath = path.join(__dirname, 'public', 'lessons.json');
 
   try {
     const lessonsFileContent = fs.readFileSync(lessonsFilePath, 'utf8');
@@ -81,6 +83,39 @@ app.get("/lessons", (request, response) => {
       response.status.send(err);
     })
 })
+
+// Define the POST route for saving new orders
+app.post('/orders', (request, response) => {
+  // Extract the order data from the request body
+  const orderData = request.body;
+
+  // Validate the order data
+  if (!orderData.customerData || !orderData.cart || typeof orderData.total !== 'number') {
+    return response.status(400).send('Invalid order data.');
+  }
+
+  // Get a reference to the 'orders' collection
+  const db = client.db('webapp-cw2');
+  const collection = db.collection('orders');
+
+  // Insert the new order into the 'orders' collection
+  collection.insertOne(orderData)
+    .then(result => {
+      // Send a success response with the ID of the newly inserted document
+      response.status(201).json({ message: 'Order saved successfully.', id: result.insertedId });
+    })
+    .catch(error => {
+      // Handle any errors that occur during the insertion
+      console.error('Error inserting order:', error);
+
+      if (error.code = 11000) {
+        response.status(409).send('Duplicate order detected. Failed to insert order.');
+      } else {
+        response.status(500).send('An error occurred while saving the order.');
+
+      }
+    });
+});
 
 // Set up a listener for your server
 app.listen(PORT, () => {
