@@ -14,7 +14,6 @@ document.addEventListener('DOMContentLoaded', function () {
             },
             showCart: false, // Tracks whether to display the cart
             search: "", // Search query for filtering lessons
-            searchResults: [],
             _searchTimeout: "",
             sortOption: "price", // Default sorting option for lessons
             orderOption: "ascending" // Default order for sorting (ascending/descending)
@@ -191,7 +190,7 @@ document.addEventListener('DOMContentLoaded', function () {
         computed: {
             // Filter lessons based on the search query
             filteredLessons() {
-                return this.searchResults;
+                return this.lessons;
 
             },
 
@@ -291,11 +290,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
                     this._searchTimeout = setTimeout(() => {
                         // Perform the fetch operation whenever the search query changes
-                        fetch(`https://web-app-coursework-2.vercel.app/search?term=${encodeURIComponent(newQuery.toLowerCase())}`)
+                        fetch(`http://localhost:3000/search?term=${encodeURIComponent(newQuery.toLowerCase())}`)
                             .then(response => response.json())
                             .then(data => {
                                 // Update the searchResults data property with the fetched data
-                                this.searchResults = data;
+                                this.lessons = data;
                             })
                             .catch(error => {
                                 console.error('Error:', error);
