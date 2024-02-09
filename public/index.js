@@ -144,7 +144,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     })
                     .then(() => {
                         alert("All lessons updated successfully.");
-                        // CURRENT_PAGE.reload(true);   
+                        CURRENT_PAGE.reload(true);   
                     })
                     .catch((error) => {
                         alert(error.message);
